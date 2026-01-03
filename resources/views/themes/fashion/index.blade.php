@@ -1,182 +1,166 @@
 @php
-    $featured = (object) [
-        'name' => 'The Autumn Coat',
-        'price' => 299.00,
-        'image' => 'https://images.unsplash.com/photo-1544957992-20516f573135?w=800&h=1000&fit=crop'
+    $featured_collection = [
+        (object)[
+            'name' => 'Oversized Wool Coat',
+            'price' => 890,
+            'image' => 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800&q=80',
+            'category' => 'Outerwear'
+        ],
+        (object)[
+            'name' => 'Pleated Wide Trousers',
+            'price' => 450,
+            'image' => 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80',
+            'category' => 'Bottoms'
+        ],
+        (object)[
+            'name' => 'Structured Blazer',
+            'price' => 620,
+            'image' => 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80',
+            'category' => 'Tailoring'
+        ]
     ];
 @endphp
 
 @extends('layouts.app')
 
-@section('title', 'VOGUE - Fashion Redefined')
+@section('title', 'VOGUE - High Fashion')
 
 @section('content')
-<div class="bg-[#fcfbf9] text-[#1a1a1a] min-h-screen font-serif selection:bg-black selection:text-white">
+<div class="bg-white text-black min-h-screen font-serif selection:bg-black selection:text-white">
     
-    <!-- Minimal Header -->
-    <nav class="fixed w-full z-50 mix-blend-difference text-white top-0 left-0 px-8 py-6 flex justify-between items-end">
-        <a href="/" class="text-xs font-sans font-bold tracking-[0.2em] uppercase">Omnishop</a>
-        <div class="text-4xl font-black tracking-tighter uppercase leading-none">Vogue</div>
-        <div class="text-xs font-sans font-bold tracking-[0.2em] uppercase">Bag (0)</div>
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 mix-blend-difference text-white">
+        <div class="px-8 py-6 flex justify-between items-center">
+            <a href="#" class="text-3xl font-black uppercase tracking-tighter">VOGUE</a>
+            <div class="hidden md:flex gap-12 text-xs font-bold tracking-[0.2em] uppercase font-sans">
+                <a href="#" class="hover:underline underline-offset-4">Collections</a>
+                <a href="#" class="hover:underline underline-offset-4">Maison</a>
+                <a href="#" class="hover:underline underline-offset-4">Campaigns</a>
+            </div>
+            <div class="flex gap-6 text-xs font-bold tracking-[0.2em] uppercase font-sans">
+                <button>Search</button>
+                <button>Cart (0)</button>
+            </div>
+        </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="relative min-h-screen flex items-center justify-center pt-20 pb-20 px-4">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 w-full max-w-[1800px] mx-auto items-center">
-            
-            <!-- Left Text -->
-            <div class="hidden md:block col-span-3 space-y-12">
-                <div class="space-y-2">
-                    <p class="font-sans text-xs font-bold tracking-widest uppercase text-gray-500">Collection</p>
-                    <p class="text-4xl italic">Autumn /<br>Winter 2024</p>
-                </div>
-                <div class="space-y-2">
-                    <p class="font-sans text-xs font-bold tracking-widest uppercase text-gray-500">Photography</p>
-                    <p class="text-xl">Sarah Moon</p>
-                </div>
-            </div>
-
-            <!-- Main Image -->
-            <div class="col-span-12 md:col-span-6 relative z-10">
-                <div class="aspect-[3/4] overflow-hidden relative group">
-                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1200&h=1600&fit=crop" class="w-full h-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" alt="Fashion Model">
-                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/10">
-                        <span class="font-sans text-xs font-bold uppercase tracking-widest text-white border border-white px-6 py-3 backdrop-blur-md">Explore Campaign</span>
-                    </div>
-                </div>
-                <h1 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] leading-none font-black text-transparent stroke-text pointer-events-none z-20 mix-blend-difference text-white opacity-90">
-                    VOGUE
+    <!-- Hero -->
+    <header class="relative h-screen flex flex-col justify-end pb-20 px-8">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=2400&q=80" class="w-full h-full object-cover grayscale brightness-90">
+        </div>
+        
+        <div class="relative z-10 grid grid-cols-12 gap-8 items-end">
+            <div class="col-span-12 md:col-span-8">
+                <h1 class="text-[15vw] leading-[0.8] font-black uppercase text-white mix-blend-difference tracking-tighter">
+                    Autumn<br>Winter
                 </h1>
             </div>
-
-            <!-- Right Text -->
-            <div class="col-span-12 md:col-span-3 flex flex-col justify-between h-full py-12">
-                <div class="text-right md:text-left">
-                    <p class="text-2xl leading-relaxed max-w-xs ml-auto md:ml-0">
-                        "Fashion is not something that exists in dresses only."
-                    </p>
-                    <p class="mt-4 font-sans text-xs font-bold uppercase tracking-widest text-gray-400">— Coco Chanel</p>
-                </div>
-                <div class="mt-12 text-right md:text-left">
-                     <a href="#shop" class="group inline-flex items-center gap-4 font-sans text-xs font-bold uppercase tracking-widest">
-                        <span class="w-12 h-px bg-black group-hover:w-20 transition-all"></span>
-                        Scroll Down
-                     </a>
-                </div>
+            <div class="col-span-12 md:col-span-4 text-white mix-blend-difference font-sans">
+                <p class="text-sm font-bold uppercase tracking-[0.2em] mb-8 border-t border-white pt-4">
+                    Collection 2026
+                </p>
+                <p class="text-lg leading-relaxed mb-8 max-w-sm">
+                    A study in contrast and silhouette. Exploring the boundaries between structure and fluidity.
+                </p>
+                <a href="#" class="inline-block px-8 py-4 bg-white text-black text-xs font-bold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-colors">
+                    Explore Lookbook
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- Editorial Layout Grid -->
-    <section id="shop" class="py-32 px-4 md:px-12">
-        <div class="max-w-[1600px] mx-auto">
-            <div class="flex flex-col md:flex-row items-end justify-between mb-24 border-b border-black py-8">
-                <h2 class="text-6xl md:text-8xl italic">New Arrivals</h2>
-                <a href="#" class="font-sans text-xs font-bold uppercase tracking-widest hover:underline mb-4 md:mb-2">View All Products</a>
+    <!-- Editorial Layout -->
+    <section class="py-32 px-4 md:px-8">
+        <div class="grid grid-cols-12 gap-8 mb-32 items-center">
+            <div class="col-span-12 md:col-span-5 order-2 md:order-1">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&q=80" class="w-full aspect-[3/4] object-cover">
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-32">
-                
-                <!-- Product 1 -->
-                <div class="group cursor-pointer space-y-6">
-                    <div class="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&h=1000&fit=crop" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                        <div class="absolute bottom-4 left-4 font-sans text-xs font-bold uppercase bg-white px-3 py-1">Best Seller</div>
-                    </div>
-                    <div class="flex justify-between items-start border-t border-black pt-4">
-                        <div>
-                            <h3 class="text-2xl italic group-hover:pl-4 transition-all duration-300">The Trench</h3>
-                            <p class="font-sans text-xs text-gray-500 mt-1 uppercase tracking-wider">Outerwear</p>
-                        </div>
-                        <span class="font-sans font-bold">$499</span>
-                    </div>
-                </div>
-
-                <!-- Product 2 (Offset) -->
-                <div class="group cursor-pointer space-y-6 md:mt-32">
-                    <div class="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1515347619252-60a6bf4fffce?w=800&h=1000&fit=crop" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                    </div>
-                    <div class="flex justify-between items-start border-t border-black pt-4">
-                        <div>
-                            <h3 class="text-2xl italic group-hover:pl-4 transition-all duration-300">Silk Blouse</h3>
-                            <p class="font-sans text-xs text-gray-500 mt-1 uppercase tracking-wider">Tops</p>
-                        </div>
-                        <span class="font-sans font-bold">$245</span>
-                    </div>
-                </div>
-
-                <!-- Product 3 -->
-                <div class="group cursor-pointer space-y-6">
-                    <div class="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1550614000-4b9519e02d48?w=800&h=1000&fit=crop" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110">
-                    </div>
-                    <div class="flex justify-between items-start border-t border-black pt-4">
-                        <div>
-                            <h3 class="text-2xl italic group-hover:pl-4 transition-all duration-300">Pleated Skirt</h3>
-                            <p class="font-sans text-xs text-gray-500 mt-1 uppercase tracking-wider">Bottoms</p>
-                        </div>
-                        <span class="font-sans font-bold">$189</span>
-                    </div>
-                </div>
-
-                 <!-- Product 4 (Large) -->
-                 <div class="group cursor-pointer col-span-1 md:col-span-2 relative mt-32">
-                    <div class="aspect-[16/9] overflow-hidden bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600&h=900&fit=crop" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                             <h3 class="text-6xl text-white mix-blend-difference italic opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-10 group-hover:translate-y-0">The Evening Edit</h3>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="col-span-12 md:col-span-7 order-1 md:order-2 pl-0 md:pl-16">
+                <span class="block text-xs font-bold font-sans uppercase tracking-[0.2em] text-gray-500 mb-4">The Philosophy</span>
+                <h2 class="text-6xl md:text-8xl font-black uppercase leading-none mb-8">
+                    Silent<br>Luxury
+                </h2>
+                <p class="text-xl font-sans text-gray-600 max-w-lg leading-relaxed">
+                    We believe in the power of understatement. Quality that speaks in whispers, not shouts. Design that respects the wearer.
+                </p>
             </div>
         </div>
+
+        <!-- Featured Collection -->
+        <div class="mb-32">
+            <div class="flex justify-between items-end mb-12 border-b border-black pb-4">
+                <h3 class="text-4xl font-bold uppercase tracking-tighter">New Arrivals</h3>
+                <a href="#" class="text-xs font-bold font-sans uppercase tracking-[0.2em] hover:underline">View All</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-12">
+                @foreach($featured_collection as $item)
+                <div class="group cursor-pointer">
+                    <div class="aspect-[3/4] overflow-hidden mb-6 relative">
+                        <img src="{{ $item->image }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0">
+                        <div class="absolute bottom-4 left-4 bg-white px-3 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.2em]">
+                            {{ $item->category }}
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-start font-sans">
+                        <div>
+                            <h4 class="text-sm font-bold uppercase tracking-wider mb-1">{{ $item->name }}</h4>
+                            <span class="text-xs text-gray-500">Available in 3 colors</span>
+                        </div>
+                        <span class="text-sm font-bold">${{ $item->price }}</span>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Full Width Banner -->
+        <div class="relative h-[80vh] overflow-hidden mb-32 flex items-center justify-center text-center">
+            <div class="absolute inset-0">
+                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=2400&q=80" class="w-full h-full object-cover grayscale">
+                <div class="absolute inset-0 bg-black/20"></div>
+            </div>
+            <div class="relative z-10 text-white max-w-2xl px-4">
+                <h2 class="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-8">Maison<br>Vogue</h2>
+                <p class="text-lg font-sans mb-12">
+                    Join our exclusive membership program for early access to collections and private events.
+                </p>
+                <form class="flex border-b border-white">
+                    <input type="email" placeholder="ENTER YOUR EMAIL" class="bg-transparent w-full py-4 text-white placeholder-white/70 font-sans text-xs font-bold uppercase tracking-[0.2em] focus:outline-none">
+                    <button class="text-xs font-bold font-sans uppercase tracking-[0.2em] px-4 hover:bg-white hover:text-black transition-colors">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="grid grid-cols-1 md:grid-cols-4 gap-12 font-sans text-xs font-bold uppercase tracking-[0.2em] border-t border-black pt-12">
+            <div>
+                <span class="block mb-6 text-gray-500">Customer Care</span>
+                <ul class="space-y-4">
+                    <li><a href="#" class="hover:underline">Shipping</a></li>
+                    <li><a href="#" class="hover:underline">Returns</a></li>
+                    <li><a href="#" class="hover:underline">Size Guide</a></li>
+                </ul>
+            </div>
+            <div>
+                <span class="block mb-6 text-gray-500">Legal</span>
+                <ul class="space-y-4">
+                    <li><a href="#" class="hover:underline">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:underline">Terms of Use</a></li>
+                </ul>
+            </div>
+            <div class="md:col-span-2 text-right">
+                <span class="block mb-6 text-gray-500">Social</span>
+                <div class="flex justify-end gap-6">
+                    <a href="#" class="hover:underline">Instagram</a>
+                    <a href="#" class="hover:underline">TikTok</a>
+                    <a href="#" class="hover:underline">Pinterest</a>
+                </div>
+                <p class="mt-12 text-gray-400">© 2026 Vogue Inc.</p>
+            </div>
+        </footer>
+
     </section>
-
-    <!-- Lookbook Section -->
-    <section class="bg-black text-white py-40 overflow-hidden relative">
-        <div class="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
-            <div class="absolute w-96 h-96 bg-purple-500 rounded-full blur-[128px] top-1/4 -left-20"></div>
-            <div class="absolute w-96 h-96 bg-blue-500 rounded-full blur-[128px] bottom-1/4 -right-20"></div>
-        </div>
-        
-        <div class="container mx-auto px-8 relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-                <div class="space-y-12">
-                    <h2 class="text-7xl md:text-9xl font-serif italic leading-[0.8]">
-                        Bold<br>
-                        <span class="font-sans not-italic font-black text-transparent stroke-text-white text-5xl md:text-7xl tracking-tighter">MOVES</span>
-                    </h2>
-                    <p class="text-xl text-gray-400 max-w-md font-sans font-light leading-relaxed">
-                        Discover the new season's defining silhouettes. Structured tailoring meets fluid drapery in a collection designed for the modern muse.
-                    </p>
-                    <a href="#" class="inline-block border border-white px-12 py-4 font-sans text-xs font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-colors">
-                        View Lookbook
-                    </a>
-                </div>
-                <div class="relative">
-                     <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&h=1000&fit=crop" class="w-3/4 ml-auto filter sepia-[.25] contrast-125">
-                     <div class="absolute -bottom-12 -left-12 bg-white text-black p-8 max-w-xs">
-                        <p class="font-serif italic text-2xl">"Elegance is refusal."</p>
-                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-[#fcfbf9] text-black py-20 border-t border-black px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-8">
-            <div class="text-center md:text-left">
-                <div class="text-4xl font-black uppercase tracking-tighter mb-2">Vogue</div>
-                <p class="font-sans text-xs font-bold uppercase tracking-widest text-gray-500">&copy; 2024 Omnishop</p>
-            </div>
-            <div class="flex gap-8 font-sans text-xs font-bold uppercase tracking-widest">
-                <a href="#" class="hover:underline">Instagram</a>
-                <a href="#" class="hover:underline">Facebook</a>
-                <a href="#" class="hover:underline">Pinterest</a>
-            </div>
-        </div>
-    </footer>
 </div>
 @endsection
