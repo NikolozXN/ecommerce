@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build:css": "tailwindcss -i ./resources/css/app.css -o ./public/build/assets/app.css --minify",
+    "build:css": "npx tailwindcss -i ./resources/css/app.css -o ./public/build/assets/app.css --minify",
     "build:html": "node compiler.js",
     "build": "npm run build:css && npm run build:html",
     "start": "node start-server.js"
