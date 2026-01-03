@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches), currentTemplate: localStorage.getItem('currentTemplate') || 'modern' }" x-bind:class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Templates - Template Switcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../dist/output.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-50 dark:bg-zinc-900 min-h-screen">
+    <!-- Template Switcher Header -->
+    <div class="bg-white dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-4">
+                    <h1 class="text-xl font-bold text-gray-900 dark:text-white">E-commerce Templates</h1>
+                    <span class="px-3 py-1 text-sm bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full">10 Templates</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <!-- Template Dropdown -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                            <span>Switch Template</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-64 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-gray-200 dark:border-zinc-700 overflow-hidden z-50">
+                            <div class="p-2">
+                                <template x-for="template in templates" :key="template.id">
+                                    <a :href="template.url" @click="localStorage.setItem('currentTemplate', template.id); currentTemplate = template.id" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors" :class="currentTemplate === template.id ? 'bg-indigo-50 dark:bg-indigo-900/20' : ''">
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold" :style="'background: ' + template.color">
+                                            <span x-text="template.icon"></span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-medium text-gray-900 dark:text-white" x-text="template.name"></p>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400" x-text="template.description"></p>
+                                        </div>
+                                        <svg x-show="currentTemplate === template.id" class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </a>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Dark Mode Toggle -->
+                    <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Choose Your Template</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-400">10 beautifully designed e-commerce templates ready to use</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" x-data="{ templates: [
+            { id: 'modern', name: 'Modern Minimal', description: 'Clean & minimal design', icon: 'M', color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', url: 'templates/modern/index.html' },
+            { id: 'luxury', name: 'Luxury Premium', description: 'Elegant & sophisticated', icon: 'L', color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', url: 'templates/luxury/index.html' },
+            { id: 'tech', name: 'Tech Store', description: 'Modern tech-focused', icon: 'T', color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', url: 'templates/tech/index.html' },
+            { id: 'fashion', name: 'Fashion Boutique', description: 'Stylish & trendy', icon: 'F', color: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)', url: 'templates/fashion/index.html' },
+            { id: 'organic', name: 'Organic Market', description: 'Natural & fresh', icon: 'O', color: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)', url: 'templates/organic/index.html' },
+            { id: 'sports', name: 'Sports Gear', description: 'Athletic & dynamic', icon: 'S', color: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)', url: 'templates/sports/index.html' },
+            { id: 'books', name: 'Book Store', description: 'Classic & readable', icon: 'B', color: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)', url: 'templates/books/index.html' },
+            { id: 'furniture', name: 'Furniture Shop', description: 'Comfortable & homey', icon: 'F', color: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)', url: 'templates/furniture/index.html' },
+            { id: 'jewelry', name: 'Jewelry Store', description: 'Elegant & refined', icon: 'J', color: 'linear-gradient(135deg, #ffd89b 0%, #19547b 100%)', url: 'templates/jewelry/index.html' },
+            { id: 'gaming', name: 'Gaming Hub', description: 'Bold & energetic', icon: 'G', color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', url: 'templates/gaming/index.html' }
+        ] }">
+            <template x-for="template in templates" :key="template.id">
+                <a :href="template.url" class="group">
+                    <div class="card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="aspect-video rounded-lg mb-4 overflow-hidden" :style="'background: ' + template.color">
+                            <div class="w-full h-full flex items-center justify-center text-white text-6xl font-bold">
+                                <span x-text="template.icon"></span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" x-text="template.name"></h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4" x-text="template.description"></p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-indigo-600 dark:text-indigo-400 font-medium group-hover:underline">View Template →</span>
+                            <span class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-400 rounded">Live Preview</span>
+                        </div>
+                    </div>
+                </a>
+            </template>
+        </div>
+    </main>
+
+    <script>
+        // Initialize templates data
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('templates', () => ({
+                templates: [
+                    { id: 'modern', name: 'Modern Minimal', description: 'Clean & minimal design', icon: 'M', color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', url: 'templates/modern/index.html' },
+                    { id: 'luxury', name: 'Luxury Premium', description: 'Elegant & sophisticated', icon: 'L', color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', url: 'templates/luxury/index.html' },
+                    { id: 'tech', name: 'Tech Store', description: 'Modern tech-focused', icon: 'T', color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', url: 'templates/tech/index.html' },
+                    { id: 'fashion', name: 'Fashion Boutique', description: 'Stylish & trendy', icon: 'F', color: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)', url: 'templates/fashion/index.html' },
+                    { id: 'organic', name: 'Organic Market', description: 'Natural & fresh', icon: 'O', color: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)', url: 'templates/organic/index.html' },
+                    { id: 'sports', name: 'Sports Gear', description: 'Athletic & dynamic', icon: 'S', color: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)', url: 'templates/sports/index.html' },
+                    { id: 'books', name: 'Book Store', description: 'Classic & readable', icon: 'B', color: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)', url: 'templates/books/index.html' },
+                    { id: 'furniture', name: 'Furniture Shop', description: 'Comfortable & homey', icon: 'F', color: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)', url: 'templates/furniture/index.html' },
+                    { id: 'jewelry', name: 'Jewelry Store', description: 'Elegant & refined', icon: 'J', color: 'linear-gradient(135deg, #ffd89b 0%, #19547b 100%)', url: 'templates/jewelry/index.html' },
+                    { id: 'gaming', name: 'Gaming Hub', description: 'Bold & energetic', icon: 'G', color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', url: 'templates/gaming/index.html' }
+                ]
+            }))
+        })
+    </script>
+</body>
+</html>
+

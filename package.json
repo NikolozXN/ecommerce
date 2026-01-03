@@ -1,0 +1,24 @@
+{
+  "name": "omnishop-premium-themes",
+  "version": "1.0.0",
+  "description": "Premium Envato-ready E-commerce Themes for Omnishop",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build:css": "tailwindcss -i ./resources/css/app.css -o ./public/build/assets/app.css --minify",
+    "build:html": "node compiler.js",
+    "build": "npm run build:css && npm run build:html",
+    "start": "node start-server.js"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.8"
+  },
+  "dependencies": {
+    "alpinejs": "^3.13.3"
+  }
+}

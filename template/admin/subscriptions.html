@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches) }" x-bind:class="{ 'dark': darkMode }">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Subscriptions - OmniShop Admin</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Instrument Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="antialiased bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-gray-100 font-sans">
+    <div class="min-h-screen flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white dark:bg-zinc-800 border-r border-gray-200 dark:border-zinc-700 fixed h-screen overflow-y-auto">
+            <div class="p-6">
+                <a href="dashboard.html" class="flex items-center gap-2 mb-8">
+                    <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    <span class="text-xl font-bold">OmniShop</span>
+                </a>
+                
+                <nav class="space-y-1">
+                    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        Dashboard
+                    </a>
+                    <a href="vendors.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        Vendors
+                    </a>
+                    <a href="orders.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        Orders
+                    </a>
+                    <a href="subscriptions.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        Subscriptions
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 ml-64">
+            <!-- Top Bar -->
+            <header class="bg-white dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700 sticky top-0 z-40">
+                <div class="px-6 py-4 flex justify-between items-center">
+                    <h1 class="text-2xl font-bold">Subscriptions</h1>
+                    <div class="flex items-center gap-4">
+                        <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700">
+                            <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                            <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        </button>
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm text-gray-600 dark:text-gray-400">Admin User</span>
+                            <a href="#" class="text-sm text-red-600 hover:text-red-700">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="p-6">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-gray-200 dark:border-zinc-700 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Active Subscriptions</h3>
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">189</p>
+                        <p class="text-xs text-gray-500 mt-1">Currently active</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-gray-200 dark:border-zinc-700 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Monthly Recurring Revenue</h3>
+                            <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">$18,711.00</p>
+                        <p class="text-xs text-gray-500 mt-1">Per month</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-gray-200 dark:border-zinc-700 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Trial Subscriptions</h3>
+                            <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">12</p>
+                        <p class="text-xs text-gray-500 mt-1">In trial period</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-gray-200 dark:border-zinc-700 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Cancelled</h3>
+                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">46</p>
+                        <p class="text-xs text-gray-500 mt-1">This month</p>
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-gray-200 dark:border-zinc-700 shadow-sm mb-6">
+                    <h3 class="text-lg font-bold mb-4">Subscription Growth (Last 12 Months)</h3>
+                    <div class="relative h-[300px]">
+                        <canvas id="subscriptionGrowthChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-gray-200 dark:border-zinc-700 shadow-sm mb-6">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <input type="text" placeholder="Search subscriptions..." class="w-full px-4 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        <select class="px-4 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <option>All Plans</option>
+                            <option>Basic</option>
+                            <option>Pro</option>
+                            <option>Enterprise</option>
+                        </select>
+                        <select class="px-4 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>Trial</option>
+                            <option>Cancelled</option>
+                            <option>Expired</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Subscriptions Table -->
+                <div class="bg-white dark:bg-zinc-800 rounded-xl border border-gray-200 dark:border-zinc-700 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-zinc-700/50">
+                                <tr>
+                                    <th class="text-left py-4 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Vendor</th>
+                                    <th class="text-left py-4 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Plan</th>
+                                    <th class="text-left py-4 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Amount</th>
+                                    <th class="text-left py-4 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Status</th>
+                                    <th class="text-left py-4 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Started</th>
+                                    <th class="text-left py-4 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Next Billing</th>
+                                    <th class="text-right py-4 px-6 text-sm font-medium text-gray-500 dark:text-gray-400">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-zinc-700">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/30">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold">
+                                                TF
+                                            </div>
+                                            <div>
+                                                <a href="vendor-detail.html" class="font-medium text-gray-900 dark:text-white hover:text-indigo-600">TechFusion Store</a>
+                                                <p class="text-sm text-gray-500">john@techfusion.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">Pro</span>
+                                    </td>
+                                    <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">$99.00</td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Active</span>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Jan 15, 2024</td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Apr 15, 2024</td>
+                                    <td class="py-4 px-6 text-right">
+                                        <a href="vendor-detail.html" class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/30">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 font-bold">
+                                                FS
+                                            </div>
+                                            <div>
+                                                <a href="vendor-detail.html" class="font-medium text-gray-900 dark:text-white hover:text-indigo-600">Fashion Style</a>
+                                                <p class="text-sm text-gray-500">sarah@fashionstyle.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400">Enterprise</span>
+                                    </td>
+                                    <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">$299.00</td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Active</span>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Dec 3, 2023</td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Apr 3, 2024</td>
+                                    <td class="py-4 px-6 text-right">
+                                        <a href="vendor-detail.html" class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/30">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">
+                                                EP
+                                            </div>
+                                            <div>
+                                                <a href="vendor-detail.html" class="font-medium text-gray-900 dark:text-white hover:text-indigo-600">ElectroPro</a>
+                                                <p class="text-sm text-gray-500">mike@electropro.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">Basic</span>
+                                    </td>
+                                    <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">$29.00</td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Active</span>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Feb 28, 2024</td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">May 28, 2024</td>
+                                    <td class="py-4 px-6 text-right">
+                                        <a href="vendor-detail.html" class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/30">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center text-yellow-600 dark:text-yellow-400 font-bold">
+                                                HM
+                                            </div>
+                                            <div>
+                                                <a href="vendor-detail.html" class="font-medium text-gray-900 dark:text-white hover:text-indigo-600">Home Market</a>
+                                                <p class="text-sm text-gray-500">lisa@homemarket.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">Pro</span>
+                                    </td>
+                                    <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">$99.00</td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">Trial</span>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Mar 10, 2024</td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Apr 10, 2024</td>
+                                    <td class="py-4 px-6 text-right">
+                                        <a href="vendor-detail.html" class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/30">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center text-pink-600 dark:text-pink-400 font-bold">
+                                                BS
+                                            </div>
+                                            <div>
+                                                <a href="vendor-detail.html" class="font-medium text-gray-900 dark:text-white hover:text-indigo-600">Beauty Store</a>
+                                                <p class="text-sm text-gray-500">sophia@beautystore.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">Pro</span>
+                                    </td>
+                                    <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">$99.00</td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Active</span>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Feb 5, 2024</td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">May 5, 2024</td>
+                                    <td class="py-4 px-6 text-right">
+                                        <a href="vendor-detail.html" class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/30">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center text-teal-600 dark:text-teal-400 font-bold">
+                                                GW
+                                            </div>
+                                            <div>
+                                                <a href="vendor-detail.html" class="font-medium text-gray-900 dark:text-white hover:text-indigo-600">Gadget World</a>
+                                                <p class="text-sm text-gray-500">emma@gadgetworld.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400">Enterprise</span>
+                                    </td>
+                                    <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">$299.00</td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Active</span>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Oct 12, 2023</td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Apr 12, 2024</td>
+                                    <td class="py-4 px-6 text-right">
+                                        <a href="vendor-detail.html" class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700/30">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold">
+                                                CS
+                                            </div>
+                                            <div>
+                                                <a href="vendor-detail.html" class="font-medium text-gray-900 dark:text-white hover:text-indigo-600">Cosmic Sports</a>
+                                                <p class="text-sm text-gray-500">alex@cosmicsports.com</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">Pro</span>
+                                    </td>
+                                    <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">$99.00</td>
+                                    <td class="py-4 px-6">
+                                        <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">Cancelled</span>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">Jan 8, 2024</td>
+                                    <td class="py-4 px-6 text-sm text-gray-500">—</td>
+                                    <td class="py-4 px-6 text-right">
+                                        <a href="vendor-detail.html" class="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="bg-gray-50 dark:bg-zinc-700/50 px-6 py-4 flex items-center justify-between border-t border-gray-200 dark:border-zinc-700">
+                        <div class="text-sm text-gray-600 dark:text-gray-400">
+                            Showing <span class="font-medium">1</span> to <span class="font-medium">6</span> of <span class="font-medium">189</span> subscriptions
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 disabled:opacity-50" disabled>Previous</button>
+                            <button class="px-3 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">1</button>
+                            <button class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">2</button>
+                            <button class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">3</button>
+                            <button class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js is not loaded');
+                return;
+            }
+
+            const ctx = document.getElementById('subscriptionGrowthChart');
+            if (ctx) {
+                const chartCtx = ctx.getContext('2d');
+                window.subscriptionGrowthChart = new Chart(chartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
+                        datasets: [{
+                            label: 'Active Subscriptions',
+                            data: [145, 152, 158, 163, 168, 172, 175, 178, 182, 185, 187, 189],
+                            borderColor: 'rgb(99, 102, 241)',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { beginAtZero: false }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

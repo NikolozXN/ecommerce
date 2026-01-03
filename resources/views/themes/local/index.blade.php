@@ -1,0 +1,258 @@
+@php
+    $categories = collect([
+        (object) ['name' => 'Vegetables', 'icon' => '🥕', 'color' => 'bg-green-100 text-green-700'],
+        (object) ['name' => 'Fruits', 'icon' => '🍎', 'color' => 'bg-red-100 text-red-700'],
+        (object) ['name' => 'Meat & Fish', 'icon' => '🥩', 'color' => 'bg-rose-100 text-rose-700'],
+        (object) ['name' => 'Bakery', 'icon' => '🥖', 'color' => 'bg-amber-100 text-amber-700'],
+        (object) ['name' => 'Dairy', 'icon' => '🥛', 'color' => 'bg-blue-100 text-blue-700'],
+        (object) ['name' => 'Beverages', 'icon' => '🧃', 'color' => 'bg-orange-100 text-orange-700'],
+    ]);
+
+    $featured = collect([
+        (object) [
+            'name' => 'Organic Avocados (Pack of 4)',
+            'price' => 5.99,
+            'image' => 'https://images.unsplash.com/photo-1523049673856-6468bca6c19f?w=600&h=600&fit=crop',
+            'rating' => 4.8,
+            'reviews' => 124,
+            'badge' => 'Organic'
+        ],
+        (object) [
+            'name' => 'Fresh Sourdough Bread',
+            'price' => 3.49,
+            'image' => 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=600&fit=crop',
+            'rating' => 4.9,
+            'reviews' => 89,
+            'badge' => 'Fresh Baked'
+        ],
+        (object) [
+            'name' => 'Premium Salmon Fillet',
+            'price' => 12.99,
+            'image' => 'https://images.unsplash.com/photo-1519708227418-c8fd9a3a1b7e?w=600&h=600&fit=crop',
+            'rating' => 4.7,
+            'reviews' => 56,
+            'badge' => 'Wild Caught'
+        ],
+        (object) [
+            'name' => 'Raw Honey Jar',
+            'price' => 8.99,
+            'image' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&h=600&fit=crop',
+            'rating' => 5.0,
+            'reviews' => 210,
+            'badge' => 'Local'
+        ]
+    ]);
+@endphp
+
+@extends('layouts.app')
+
+@section('title', 'FreshMarket - Organic & Local')
+
+@section('content')
+<div class="bg-[#f8f9fa] text-gray-800 font-sans selection:bg-green-500 selection:text-white min-h-screen">
+    
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
+        <div class="max-w-[1600px] mx-auto px-4 lg:px-8 h-20 flex items-center justify-between gap-8">
+            <div class="flex items-center gap-12">
+                <a href="/" class="flex items-center gap-2 group">
+                    <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center text-white text-xl shadow-green-200 shadow-lg group-hover:scale-110 transition-transform">🥬</div>
+                    <span class="text-xl font-black tracking-tight text-gray-900">FreshMarket<span class="text-green-500">.</span></span>
+                </a>
+                
+                <!-- Search -->
+                <div class="hidden lg:flex items-center bg-gray-100 rounded-full px-4 py-2.5 w-96 focus-within:ring-2 focus-within:ring-green-500 transition-shadow">
+                    <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" placeholder="Search for apples, milk, bread..." class="bg-transparent border-none outline-none w-full text-sm font-medium placeholder-gray-400">
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <a href="#" class="hidden md:flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-green-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <span>Lists</span>
+                </a>
+                <button class="flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-full font-bold shadow-lg shadow-green-200 transition-all active:scale-95">
+                    <span class="text-sm">$0.00</span>
+                    <div class="w-px h-4 bg-green-400"></div>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="pt-8 pb-16 px-4 lg:px-8 max-w-[1600px] mx-auto">
+        <div class="bg-[#EAFBF3] rounded-[3rem] p-8 lg:p-16 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-full h-full pointer-events-none overflow-hidden">
+                <div class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-green-200/50 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-yellow-100/50 rounded-full blur-3xl"></div>
+            </div>
+
+            <div class="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm text-green-700 font-bold text-sm mb-8">
+                        <span class="text-lg">🚚</span> Free delivery on 1st order
+                    </div>
+                    <h1 class="text-5xl lg:text-7xl font-black text-gray-900 leading-tight mb-8">
+                        Groceries delivered in <span class="text-green-600">minutes</span>.
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-10 leading-relaxed font-medium">
+                        Get fresh organic produce, local meats, and artisanal bakery items delivered directly to your doorstep.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#shop" class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl shadow-green-200 transition-all hover:-translate-y-1">Start Shopping</a>
+                        <a href="#producers" class="bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-full font-bold text-lg shadow-sm transition-all">View Producers</a>
+                    </div>
+                    
+                    <div class="mt-12 flex items-center gap-4 text-sm font-bold text-gray-500">
+                        <div class="flex -space-x-3">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" class="w-10 h-10 rounded-full border-2 border-white">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" class="w-10 h-10 rounded-full border-2 border-white">
+                        </div>
+                        <p>12k+ happy neighbors</p>
+                    </div>
+                </div>
+                
+                <div class="relative hidden lg:block">
+                     <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&h=800&fit=crop" class="relative z-10 w-full rounded-3xl shadow-2xl rotate-3 hover:rotate-0 transition-all duration-500">
+                     <!-- Floating Cards -->
+                     <div class="absolute -left-12 bottom-12 bg-white p-4 rounded-2xl shadow-xl z-20 animate-bounce" style="animation-duration: 3s">
+                         <div class="flex items-center gap-3">
+                             <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-2xl">🥑</div>
+                             <div>
+                                 <div class="text-xs text-gray-500 font-bold uppercase">Fresh</div>
+                                 <div class="font-bold">Avocados</div>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Categories -->
+    <section class="py-8 px-4 lg:px-8 max-w-[1600px] mx-auto">
+        <div class="flex justify-between items-end mb-8">
+            <h2 class="text-3xl font-black text-gray-900">Browse by Aisle</h2>
+            <a href="#" class="text-green-600 font-bold hover:underline">View All</a>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            @foreach($categories as $cat)
+            <a href="#" class="group bg-white hover:border-green-500 border-2 border-transparent p-6 rounded-3xl text-center shadow-sm hover:shadow-xl transition-all duration-300">
+                <div class="w-20 h-20 mx-auto rounded-full {{ $cat->color }} flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition-transform">
+                    {{ $cat->icon }}
+                </div>
+                <h3 class="font-bold text-gray-900">{{ $cat->name }}</h3>
+            </a>
+            @endforeach
+        </div>
+    </section>
+
+    <!-- Best Sellers -->
+    <section id="shop" class="py-16 px-4 lg:px-8 max-w-[1600px] mx-auto">
+        <h2 class="text-3xl font-black text-gray-900 mb-10">Farm Fresh Favorites</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            @foreach($featured as $product)
+            <div class="bg-white p-4 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 group border border-gray-100 relative">
+                @if($product->badge)
+                <div class="absolute top-6 left-6 z-10 bg-black/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full">
+                    {{ $product->badge }}
+                </div>
+                @endif
+                
+                <div class="relative aspect-[4/3] bg-gray-50 rounded-2xl overflow-hidden mb-6">
+                    <img src="{{ $product->image }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <button class="absolute bottom-4 right-4 bg-white text-green-600 w-10 h-10 rounded-full shadow-lg flex items-center justify-center hover:bg-green-600 hover:text-white transition-colors opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    </button>
+                </div>
+                
+                <div class="px-2">
+                    <div class="flex items-center gap-1 mb-2">
+                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                        <span class="text-xs font-bold text-gray-500">{{ $product->rating }} ({{ $product->reviews }})</span>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-900 mb-1 leading-tight group-hover:text-green-600 transition-colors">{{ $product->name }}</h3>
+                    <div class="flex items-center justify-between mt-4">
+                        <span class="text-xl font-black text-gray-900">${{ $product->price }}</span>
+                        <button class="text-sm font-bold text-gray-500 border border-gray-200 px-4 py-1.5 rounded-full hover:border-green-500 hover:text-green-600 transition-colors">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </section>
+    
+    <!-- Banner -->
+    <section class="py-8 px-4 lg:px-8 max-w-[1600px] mx-auto">
+        <div class="bg-black text-white rounded-[2.5rem] p-12 lg:p-20 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&fit=crop')] bg-cover opacity-20 mix-blend-overlay"></div>
+            
+            <div class="relative z-10 max-w-xl">
+                <span class="text-green-400 font-bold tracking-widest uppercase mb-4 block">Organic Week</span>
+                <h2 class="text-5xl lg:text-6xl font-black mb-6">Eat better, feel better.</h2>
+                <p class="text-xl text-gray-400 mb-8">Get 20% off all organic vegetables this week only. Support local farmers and eat fresh.</p>
+                <a href="#" class="inline-block bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-gray-200 transition-colors">Shop Organic</a>
+            </div>
+            <div class="relative z-10 w-full md:w-auto">
+                 <div class="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20">
+                     <div class="text-4xl font-black mb-1">20%</div>
+                     <div class="text-sm font-bold uppercase tracking-widest text-gray-400">Discount Code</div>
+                     <div class="mt-4 bg-black/50 p-4 rounded-xl font-mono text-center text-xl tracking-widest border border-white/10 select-all">ORGANIC20</div>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 mt-20 pt-20 pb-10">
+        <div class="max-w-[1600px] mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <a href="/" class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white text-lg">🥬</div>
+                        <span class="text-xl font-black text-gray-900">FreshMarket<span class="text-green-500">.</span></span>
+                    </a>
+                    <p class="text-gray-500 leading-relaxed">Your neighborhood organic grocery store. We deliver fresh produce, meats, and pantry essentials.</p>
+                </div>
+                <!-- Links -->
+                <div>
+                    <h4 class="font-black text-gray-900 mb-6">Shop</h4>
+                    <ul class="space-y-4 text-gray-500 font-medium">
+                        <li><a href="#" class="hover:text-green-600">All Products</a></li>
+                        <li><a href="#" class="hover:text-green-600">Fresh Produce</a></li>
+                        <li><a href="#" class="hover:text-green-600">Meat & Dairy</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h4 class="font-black text-gray-900 mb-6">Company</h4>
+                    <ul class="space-y-4 text-gray-500 font-medium">
+                        <li><a href="#" class="hover:text-green-600">About Us</a></li>
+                        <li><a href="#" class="hover:text-green-600">Sustainability</a></li>
+                        <li><a href="#" class="hover:text-green-600">Careers</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h4 class="font-black text-gray-900 mb-6">Help</h4>
+                    <ul class="space-y-4 text-gray-500 font-medium">
+                        <li><a href="#" class="hover:text-green-600">Delivery Info</a></li>
+                        <li><a href="#" class="hover:text-green-600">Returns</a></li>
+                        <li><a href="#" class="hover:text-green-600">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-sm font-bold text-gray-400 border-t border-gray-100 pt-8">
+                <p>&copy; 2024 FreshMarket Inc.</p>
+                <div class="flex gap-6">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+@endsection
