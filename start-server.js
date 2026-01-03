@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import { exec, spawn } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const VIEWS_DIR = path.join(__dirname, 'resources', 'views');
 
